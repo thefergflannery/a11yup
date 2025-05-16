@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 // Version tracking
-const VERSION = '0.1.1'; // Added error handling for non-compliant items form
+const VERSION = '0.2.1'; // Updated navigation and form buttons
 
 // WCAG versions and levels
 const WCAG_VERSIONS = [
