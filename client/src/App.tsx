@@ -57,18 +57,37 @@ export const Home = () => {
     reason: '',
     criteria: ''
   });
+  const [editIndex, setEditIndex] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<string | null>(null);
+  const [urlError, setUrlError] = useState('');
   const navigate = useNavigate();
 
-  const handleAddException = () => {
-    if (newException.name && newException.reason) {
+  const handleAddException = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!newException.name || !newException.reason) return;
+    if (editIndex !== null) {
+      // Edit mode
+      const updated = [...exceptions];
+      updated[editIndex] = newException;
+      setExceptions(updated);
+      setEditIndex(null);
+    } else {
       setExceptions([...exceptions, newException]);
-      setNewException({ name: '', reason: '', criteria: '' });
     }
+    setNewException({ name: '', reason: '', criteria: '' });
+  };
+
+  const handleEditException = (index: number) => {
+    setEditIndex(index);
+    setNewException(exceptions[index]);
   };
 
   const handleRemoveException = (index: number) => {
     setExceptions(exceptions.filter((_, i) => i !== index));
+    if (editIndex === index) {
+      setEditIndex(null);
+      setNewException({ name: '', reason: '', criteria: '' });
+    }
   };
 
   const getWcagLabel = (value: string) => {
@@ -77,6 +96,11 @@ export const Home = () => {
   };
 
   const handleGenerate = () => {
+    if (!url) {
+      setUrlError('Please enter your website URL.');
+      return;
+    }
+    setUrlError('');
     navigate('/results', {
       state: {
         legislation,
@@ -305,75 +329,35 @@ export const Home = () => {
                     <input
                       type="url"
                       value={url}
-                      onChange={(e) => setUrl(e.target.value)}
+                      onChange={(e) => { setUrl(e.target.value); setUrlError(''); }}
                       placeholder="Enter your website URL"
-                      className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-300 focus:border-transparent"
+                      className={`w-full px-4 py-3 pl-12 border ${urlError ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-primary-300 focus:border-transparent`}
                     />
                     <GlobeAltIcon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                    {urlError && <p className="text-red-500 text-sm mt-1">{urlError}</p>}
                   </div>
 
-                  <div className="border-t border-gray-200 pt-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">Non-Compliant Items</h3>
-                    <form onSubmit={handleAddException} className="space-y-4">
-                      <div>
-                        <label htmlFor="item" className="block text-sm font-medium text-gray-700">
-                          Non-Compliant Item
-                        </label>
-                        <input
-                          type="text"
-                          id="item"
-                          value={newException.name}
-                          onChange={(e) => setNewException({ ...newException, name: e.target.value })}
-                          placeholder="e.g., PDF documents, video content"
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
-                          Reason for Non-Compliance
-                        </label>
-                        <textarea
-                          id="reason"
-                          value={newException.reason}
-                          onChange={(e) => setNewException({ ...newException, reason: e.target.value })}
-                          placeholder="Explain why this item is not compliant"
-                          rows={3}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="criteria" className="block text-sm font-medium text-gray-700">
-                          WCAG Criteria (Optional)
-                        </label>
-                        <input
-                          type="text"
-                          id="criteria"
-                          value={newException.criteria}
-                          onChange={(e) => setNewException({ ...newException, criteria: e.target.value })}
-                          placeholder="e.g., 1.2.2, 1.2.3"
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-300 hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300"
-                      >
-                        <PlusIcon className="h-5 w-5 mr-2" />
-                        Add Exception
-                      </button>
-                    </form>
-
-                    {exceptions.length > 0 && (
-                      <div className="mt-6 flex flex-wrap gap-2">
+                  {/* Non-Compliant Items Pills Section */}
+                  {exceptions.length > 0 && (
+                    <div className="mt-6">
+                      <h4 className="font-medium text-gray-900 mb-2">The following items are non-compliant:</h4>
+                      <div className="flex flex-wrap gap-2">
                         {exceptions.map((exception, index) => (
                           <span
                             key={exception.name + index}
                             className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-sm font-medium border border-primary-200"
                           >
-                            {exception.name}
+                            <span className="mr-2">{exception.name}</span>
+                            <button
+                              onClick={() => handleEditException(index)}
+                              className="text-primary-400 hover:text-primary-700 focus:outline-none mr-1"
+                              aria-label={`Edit ${exception.name}`}
+                            >
+                              Edit
+                            </button>
                             <button
                               onClick={() => handleRemoveException(index)}
-                              className="ml-2 text-primary-400 hover:text-primary-700 focus:outline-none"
+                              className="text-primary-400 hover:text-primary-700 focus:outline-none"
                               aria-label={`Remove ${exception.name}`}
                             >
                               <XMarkIcon className="h-4 w-4" />
@@ -381,8 +365,66 @@ export const Home = () => {
                           </span>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  <form onSubmit={handleAddException} className="space-y-4">
+                    <div>
+                      <label htmlFor="item" className="block text-sm font-medium text-gray-700">
+                        Non-Compliant Item
+                      </label>
+                      <input
+                        type="text"
+                        id="item"
+                        value={newException.name}
+                        onChange={(e) => setNewException({ ...newException, name: e.target.value })}
+                        placeholder="e.g., PDF documents, video content"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
+                        Reason for Non-Compliance
+                      </label>
+                      <textarea
+                        id="reason"
+                        value={newException.reason}
+                        onChange={(e) => setNewException({ ...newException, reason: e.target.value })}
+                        placeholder="Explain why this item is not compliant"
+                        rows={3}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="criteria" className="block text-sm font-medium text-gray-700">
+                        WCAG Criteria (Optional)
+                      </label>
+                      <input
+                        type="text"
+                        id="criteria"
+                        value={newException.criteria}
+                        onChange={(e) => setNewException({ ...newException, criteria: e.target.value })}
+                        placeholder="e.g., 1.2.2, 1.2.3"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-300 hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300"
+                    >
+                      <PlusIcon className="h-5 w-5 mr-2" />
+                      {editIndex !== null ? 'Update Exception' : 'Add Exception'}
+                    </button>
+                    {editIndex !== null && (
+                      <button
+                        type="button"
+                        onClick={() => { setEditIndex(null); setNewException({ name: '', reason: '', criteria: '' }); }}
+                        className="ml-2 text-sm text-gray-500 underline"
+                      >
+                        Cancel Edit
+                      </button>
                     )}
-                  </div>
+                  </form>
 
                   <button 
                     onClick={handleGenerate}
