@@ -71,11 +71,17 @@ export const Home = () => {
     setExceptions(exceptions.filter((_, i) => i !== index));
   };
 
+  const getWcagLabel = (value: string) => {
+    const found = WCAG_VERSIONS.find(v => v.value === value);
+    return found ? found.label : value;
+  };
+
   const handleGenerate = () => {
     navigate('/results', {
       state: {
         legislation,
         wcagVersion,
+        wcagLabel: getWcagLabel(wcagVersion),
         url,
         exceptions
       }
@@ -358,30 +364,21 @@ export const Home = () => {
                     </form>
 
                     {exceptions.length > 0 && (
-                      <div className="mt-6 space-y-4">
+                      <div className="mt-6 flex flex-wrap gap-2">
                         {exceptions.map((exception, index) => (
-                          <div
-                            key={exception.name}
-                            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                          <span
+                            key={exception.name + index}
+                            className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-sm font-medium border border-primary-200"
                           >
-                            <div className="flex justify-between items-start">
-                              <div className="space-y-2">
-                                <h4 className="font-medium text-gray-900">{exception.name}</h4>
-                                <p className="text-gray-600">{exception.reason}</p>
-                                {exception.criteria && (
-                                  <p className="text-sm text-gray-500">
-                                    WCAG Criteria: {exception.criteria}
-                                  </p>
-                                )}
-                              </div>
-                              <button
-                                onClick={() => handleRemoveException(index)}
-                                className="text-gray-400 hover:text-gray-500"
-                              >
-                                <XMarkIcon className="h-5 w-5" />
-                              </button>
-                            </div>
-                          </div>
+                            {exception.name}
+                            <button
+                              onClick={() => handleRemoveException(index)}
+                              className="ml-2 text-primary-400 hover:text-primary-700 focus:outline-none"
+                              aria-label={`Remove ${exception.name}`}
+                            >
+                              <XMarkIcon className="h-4 w-4" />
+                            </button>
+                          </span>
                         ))}
                       </div>
                     )}
@@ -406,7 +403,7 @@ export const Home = () => {
 
 export const Results = () => {
   const location = useLocation();
-  const { legislation, wcagVersion, url, exceptions } = location.state || {};
+  const { legislation, wcagVersion, wcagLabel, url, exceptions } = location.state || {};
   const [statement, setStatement] = React.useState('');
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -414,11 +411,12 @@ export const Results = () => {
     const domain = url ? new URL(url).hostname : '';
     const cleanDomain = domain.replace('www.', '');
     const currentDate = new Date().toLocaleDateString();
+    const conformance = wcagLabel || wcagVersion;
 
     const templates = {
       'eaa-2025': `Accessibility Statement for ${cleanDomain}
 
-${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the European Accessibility Act 2025. We strive to meet the Web Content Accessibility Guidelines (WCAG) ${wcagVersion}.
+${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the European Accessibility Act 2025. We strive to meet the Web Content Accessibility Guidelines (${conformance}).
 
 What we're doing to improve accessibility:
 
@@ -426,12 +424,12 @@ We are actively working to improve the accessibility of our website and will con
 
 ${exceptions && exceptions.length > 0 ? `Areas of non-compliance:
 
-${cleanDomain} is currently partially compliant with WCAG ${wcagVersion} due to the following issues:
+${cleanDomain} is currently partially compliant with ${conformance} due to the following issues:
 ${exceptions.map((e: Exception) => `- ${e.name}: ${e.reason}${e.criteria ? ` (WCAG ${e.criteria})` : ''}`).join('\n')}
 
 We are actively working to address these issues and improve our website's accessibility.` : `Conformance Status:
 
-${cleanDomain} is fully conformant with WCAG ${wcagVersion} and the European Accessibility Act 2025.`}
+${cleanDomain} is fully conformant with ${conformance} and the European Accessibility Act 2025.`}
 
 How to request information and content in alternative formats:
 
@@ -527,56 +525,54 @@ This statement was prepared on ${currentDate}.`
     };
 
     setStatement(templates[legislation as keyof typeof templates] || templates['eaa-2025']);
-  }, [location.state, legislation, wcagVersion, url, exceptions]);
+  }, [location.state, legislation, wcagVersion, wcagLabel, url, exceptions]);
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow-sm rounded-lg p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Your Accessibility Statement</h1>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400"
-              >
-                {isEditing ? 'Save' : 'Edit'}
-              </button>
-            </div>
-            {isEditing ? (
-              <textarea
-                value={statement}
-                onChange={(e) => setStatement(e.target.value)}
-                className="w-full h-96 p-4 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
-              />
-            ) : (
-              <pre className="whitespace-pre-wrap font-sans text-gray-700">{statement}</pre>
-            )}
-            <div className="mt-6 flex justify-end space-x-4">
-              <button
-                onClick={() => {
-                  const blob = new Blob([statement], { type: 'text/plain' });
-                  const url = window.URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = 'accessibility-statement.txt';
-                  a.click();
-                }}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200"
-              >
-                Download
-              </button>
-              <button
-                onClick={() => window.print()}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400"
-              >
-                Print
-              </button>
-            </div>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow-sm rounded-lg p-8">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-gray-900">Your Accessibility Statement</h1>
+            <button
+              onClick={() => setIsEditing(!isEditing)}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400"
+            >
+              {isEditing ? 'Save' : 'Edit'}
+            </button>
+          </div>
+          {isEditing ? (
+            <textarea
+              value={statement}
+              onChange={(e) => setStatement(e.target.value)}
+              className="w-full h-96 p-4 border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500"
+            />
+          ) : (
+            <pre className="whitespace-pre-wrap font-sans text-gray-700">{statement}</pre>
+          )}
+          <div className="mt-6 flex justify-end space-x-4">
+            <button
+              onClick={() => {
+                const blob = new Blob([statement], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'accessibility-statement.txt';
+                a.click();
+              }}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200"
+            >
+              Download
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400"
+            >
+              Print
+            </button>
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 
