@@ -60,11 +60,16 @@ export const Home = () => {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [urlError, setUrlError] = useState('');
+  const [addError, setAddError] = useState<string>('');
   const navigate = useNavigate();
 
   const handleAddException = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!newException.name || !newException.reason) return;
+    if (!newException.name || !newException.reason) {
+      setAddError('Please fill in both the Non-Compliant Item and Reason for Non-Compliance fields.');
+      return;
+    }
+    setAddError('');
     if (editIndex !== null) {
       // Edit mode
       const updated = [...exceptions];
@@ -425,6 +430,7 @@ export const Home = () => {
                       </button>
                     )}
                   </form>
+                  {addError && <p className="text-red-500 text-sm mt-2">{addError}</p>}
 
                   <button 
                     onClick={handleGenerate}
