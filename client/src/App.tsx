@@ -4,6 +4,7 @@ import { GlobeAltIcon, ArrowRightIcon, PlusIcon, XMarkIcon, CheckCircleIcon, Che
 import Layout from './components/Layout';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 
 // Version tracking
 const VERSION = '0.1.1'; // Added error handling for non-compliant items form
@@ -754,6 +755,7 @@ const App = () => {
         </Routes>
         <Footer />
       </Layout>
+      <Analytics />
     </Router>
   );
 };
