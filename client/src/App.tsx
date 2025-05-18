@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 // Version tracking
-const VERSION = '0.2.2'; // Updated product name to A11YO
+const VERSION = '0.2.3'; // Updated logo to text
 
 // WCAG versions and levels
 const WCAG_VERSIONS = [

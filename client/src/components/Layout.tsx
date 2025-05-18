@@ -22,8 +22,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="flex h-16 justify-between">
                 <div className="flex">
                   <div className="flex flex-shrink-0 items-center">
-                    <Link to="/" className="text-2xl font-bold text-primary-300">
-                      A11yUp
+                    <Link to="/" className="text-2xl font-bold text-secondary-700">
+                      A11YO
                     </Link>
                   </div>
                   <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
