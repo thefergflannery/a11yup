@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 // Version tracking
-const VERSION = '0.2.1'; // Updated navigation and form buttons
+const VERSION = '0.2.2'; // Updated product name to A11YO
 
 // WCAG versions and levels
 const WCAG_VERSIONS = [
@@ -703,9 +703,9 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h3 className="text-lg font-semibold text-secondary-700 mb-4">About A11yUp</h3>
+          <h3 className="text-lg font-semibold text-secondary-700 mb-4">About A11YO</h3>
           <p className="text-gray-600 mb-4">
-            A11yUp helps organizations create compliant accessibility statements that meet international standards and regulations.
+            A11YO helps organizations create compliant accessibility statements that meet international standards and regulations.
           </p>
         </div>
         <div>
@@ -730,7 +730,7 @@ const Footer = () => (
       <div className="mt-8 pt-8 border-t border-gray-200">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500">
-            © {new Date().getFullYear()} A11yUp. All rights reserved.
+            © {new Date().getFullYear()} A11YO. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
             <p className="text-gray-500 mt-4 md:mt-0">
