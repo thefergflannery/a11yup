@@ -8,7 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Helmet } from 'react-helmet';
 
 // Version tracking
-const VERSION = '0.2.6'; // Updated navigation and added meta information
+const VERSION = '0.2.7'; // Fixed TypeScript build error
 
 // Meta information for social sharing
 const META_INFO = {
