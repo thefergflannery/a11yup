@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     to="/"
                     className="rounded-md bg-primary-300 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                   >
-                    Generate Statement
+                    Generate Accessibility Statement
                   </Link>
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
@@ -86,7 +86,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     to="/"
                     className="w-full rounded-md bg-primary-300 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                   >
-                    Generate Statement
+                    Generate Accessibility Statement
                   </Link>
                 </div>
               </div>
