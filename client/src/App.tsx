@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
+import Support from './pages/Support';
 
 // Version tracking
 const VERSION = '0.2.3'; // Updated logo to text
@@ -701,7 +702,7 @@ const Templates = () => (
 const Footer = () => (
   <footer className="">
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="text-lg font-semibold text-secondary-700 mb-4">About A11YO</h3>
           <p className="text-gray-600 mb-4">
@@ -725,6 +726,18 @@ const Footer = () => (
           <a href="mailto:hello@fergflannery.com" className="text-primary-300 hover:text-primary-400">
             Report an accessibility issue
           </a>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-secondary-700 mb-4">Support the Developer</h3>
+          <p className="text-gray-600 mb-4">
+            This platform was created to help make accessibility compliance easier for everyone. If you find it valuable, consider supporting its development.
+          </p>
+          <button
+            onClick={() => window.location.href = '/support'}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300"
+          >
+            Support A11YO
+          </button>
         </div>
       </div>
       <div className="mt-8 pt-8 border-t border-gray-200">
@@ -752,6 +765,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/support" element={<Support />} />
         </Routes>
         <Footer />
       </Layout>
