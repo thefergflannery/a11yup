@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 
 // Version tracking
-const VERSION = '0.2.4'; // Switched to Stripe payment link for support
+const VERSION = '0.2.5'; // Updated version tracking and documentation
 
 // WCAG versions and levels
 const WCAG_VERSIONS = [
