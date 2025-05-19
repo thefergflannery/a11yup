@@ -2,13 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GlobeAltIcon, ArrowRightIcon, PlusIcon, XMarkIcon, CheckCircleIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import Layout from './components/Layout';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { Helmet } from 'react-helmet';
 
 // Version tracking
-const VERSION = '0.2.8'; // Fixed dependency conflicts and build issues
+const VERSION = '0.2.9'; // Fixed anchor links and build issues
 
 // Meta information for social sharing
 const META_INFO = {
@@ -75,6 +75,31 @@ export const Home = () => {
   const [urlError, setUrlError] = useState('');
   const [addError, setAddError] = useState<string>('');
   const navigate = useNavigate();
+
+  // Add scroll handling
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Handle hash changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash) {
+        scrollToSection(hash);
+      }
+    };
+
+    // Initial scroll if hash exists
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleAddException = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -147,12 +172,20 @@ export const Home = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href="#generator"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection('generator');
+                    }}
                     className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-lg text-white bg-primary-300 hover:bg-primary-400 transition-colors shadow-lg hover:shadow-xl"
                   >
                     Get Started Free
                   </a>
                   <a
                     href="#features"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection('features');
+                    }}
                     className="inline-flex items-center justify-center px-8 py-4 border-2 border-secondary-200 text-lg font-medium rounded-lg text-secondary-700 hover:bg-secondary-50 transition-colors"
                   >
                     Learn More
