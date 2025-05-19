@@ -5,9 +5,18 @@ import Layout from './components/Layout';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
+import { Helmet } from 'react-helmet';
 
 // Version tracking
-const VERSION = '0.2.5'; // Updated version tracking and documentation
+const VERSION = '0.2.6'; // Updated navigation and added meta information
+
+// Meta information for social sharing
+const META_INFO = {
+  title: 'A11YO - Generate Compliant Accessibility Statements',
+  description: 'Create WCAG 2.2 and EAA 2025 compliant accessibility statements with our AI-powered tool. Document your website\'s accessibility features and exceptions effortlessly.',
+  image: '/og-image.png', // You'll need to add this image to your public folder
+  url: 'https://a11yo.com'
+};
 
 // WCAG versions and levels
 const WCAG_VERSIONS = [
@@ -761,6 +770,24 @@ const Footer = () => (
 const App = () => {
   return (
     <Router>
+      <Helmet>
+        <title>{META_INFO.title}</title>
+        <meta name="description" content={META_INFO.description} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={META_INFO.url} />
+        <meta property="og:title" content={META_INFO.title} />
+        <meta property="og:description" content={META_INFO.description} />
+        <meta property="og:image" content={META_INFO.image} />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={META_INFO.url} />
+        <meta property="twitter:title" content={META_INFO.title} />
+        <meta property="twitter:description" content={META_INFO.description} />
+        <meta property="twitter:image" content={META_INFO.image} />
+      </Helmet>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />

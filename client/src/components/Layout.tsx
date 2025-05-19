@@ -3,7 +3,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 
 const navigation = [
-  { name: 'Learn More', href: '/#features', current: false },
+  { name: 'About', href: '/#features', current: false },
+  { name: 'FAQ', href: '/#faq', current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -48,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     to="/"
                     className="rounded-md bg-primary-300 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                   >
-                    Generate Accessibility Statement
+                    Generate
                   </Link>
                 </div>
                 <div className="-mr-2 flex items-center sm:hidden">
@@ -86,7 +87,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     to="/"
                     className="w-full rounded-md bg-primary-300 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-primary-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-300"
                   >
-                    Generate Accessibility Statement
+                    Generate
                   </Link>
                 </div>
               </div>
