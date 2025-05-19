@@ -5,7 +5,6 @@ import Layout from './components/Layout';
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
-import Support from './pages/Support';
 
 // Version tracking
 const VERSION = '0.2.3'; // Updated logo to text
@@ -732,12 +731,14 @@ const Footer = () => (
           <p className="text-gray-600 mb-4">
             This platform was created to help make accessibility compliance easier for everyone. If you find it valuable, consider supporting its development.
           </p>
-          <button
-            onClick={() => window.location.href = '/support'}
+          <a
+            href="https://buy.stripe.com/9AQ6oY2hK7AhgtW144"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300"
           >
             Support A11YO
-          </button>
+          </a>
         </div>
       </div>
       <div className="mt-8 pt-8 border-t border-gray-200">
@@ -765,7 +766,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/results" element={<Results />} />
-          <Route path="/support" element={<Support />} />
         </Routes>
         <Footer />
       </Layout>
