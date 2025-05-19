@@ -56,7 +56,19 @@ const LEGISLATION_OPTIONS = [
 interface Exception {
   name: string;
   reason: string;
-  criteria: string;
+  criteria?: string;
+}
+
+interface ComplianceDetails {
+  level: string;
+  details: string[];
+}
+
+interface LocationState {
+  legislation: string;
+  wcagVersion: '2.2-AAA' | '2.2-AA';
+  url: string;
+  exceptions: Exception[];
 }
 
 // Pages
@@ -159,17 +171,17 @@ export const Home = () => {
     <div className="space-y-16">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="min-h-[85vh] py-12 flex items-center">
+        <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center">
           <div className="w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="space-y-8">
-                <h1 className="text-5xl md:text-6xl font-bold text-secondary-700 leading-tight">
+              <div className="space-y-8 text-center lg:text-left">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-secondary-700 leading-tight">
                   Generate Compliant Accessibility Statements in Minutes
                 </h1>
-                <p className="text-xl text-gray-600 leading-relaxed">
+                <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                   Create WCAG 2.2 and EAA 2025 compliant accessibility statements with our AI-powered tool. Document your website's accessibility features and exceptions effortlessly.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                   <a
                     href="#generator"
                     onClick={(e) => {
@@ -491,135 +503,122 @@ export const Home = () => {
           </div>
         </section>
       </main>
+
+      {/* Mailing List Section */}
+      <section className="bg-primary-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-secondary-700 mb-4">
+              Stay Up to Date
+            </h2>
+            <p className="text-lg text-gray-600 mb-8">
+              Get the latest product improvements, accessibility news, and updates delivered straight to your inbox.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-300 focus:border-transparent"
+                required
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 bg-primary-300 text-white font-medium rounded-lg hover:bg-primary-400 transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
+            <p className="text-sm text-gray-500 mt-4">
+              We respect your privacy. Unsubscribe at any time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
 
 export const Results = () => {
   const location = useLocation();
-  const { legislation, wcagVersion, wcagLabel, url, exceptions } = location.state || {};
-  const [statement, setStatement] = React.useState('');
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [statement, setStatement] = useState('');
 
-  React.useEffect(() => {
-    const domain = url ? new URL(url).hostname : '';
-    const cleanDomain = domain.replace('www.', '');
-    const currentDate = new Date().toLocaleDateString();
-    const conformance = wcagLabel || wcagVersion;
+  useEffect(() => {
+    if (location.state) {
+      const { wcagVersion, url, exceptions } = location.state as LocationState;
+      const cleanDomain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      
+      const complianceDetails: Record<string, ComplianceDetails> = {
+        '2.2-AAA': {
+          level: 'Level AAA',
+          details: [
+            'All images have descriptive alt text',
+            'All form fields have proper labels and ARIA attributes',
+            'Color contrast meets WCAG 2.2 Level AAA requirements',
+            'All interactive elements are keyboard accessible',
+            'All content is properly structured with semantic HTML',
+            'All multimedia content has captions and transcripts',
+            'All dynamic content updates are announced to screen readers',
+            'All content is readable and understandable',
+            'All functionality is available through keyboard navigation',
+            'All content is compatible with assistive technologies'
+          ]
+        },
+        '2.2-AA': {
+          level: 'Level AA',
+          details: [
+            'All images have descriptive alt text',
+            'All form fields have proper labels',
+            'Color contrast meets WCAG 2.2 Level AA requirements',
+            'All interactive elements are keyboard accessible',
+            'Content is properly structured with semantic HTML',
+            'All multimedia content has captions',
+            'All dynamic content updates are announced to screen readers',
+            'All functionality is available through keyboard navigation'
+          ]
+        }
+      };
 
-    const templates = {
-      'eaa-2025': `Accessibility Statement for ${cleanDomain}
+      const compliance = complianceDetails[wcagVersion] || complianceDetails['2.2-AA'];
+      
+      const baseStatement = `Accessibility Statement for ${cleanDomain}
 
-${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the European Accessibility Act 2025. We strive to meet the Web Content Accessibility Guidelines (${conformance}).
+This accessibility statement applies to ${cleanDomain}. We are committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.
 
-What we're doing to improve accessibility:
+Conformance Status
+-----------------
+We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.2 ${compliance.level}. These guidelines explain how to make web content more accessible for people with disabilities.
 
-We are actively working to improve the accessibility of our website and will continue to apply accessibility standards to all content being published. Our team regularly reviews and updates our website to ensure it remains accessible to all users.
+Compliance Details
+-----------------
+Our website has been designed and developed with accessibility in mind. We have implemented the following accessibility features:
 
-${exceptions && exceptions.length > 0 ? `Areas of non-compliance:
+${compliance.details.map((detail: string) => `• ${detail}`).join('\n')}
 
-${cleanDomain} is currently partially compliant with ${conformance} due to the following issues:
-${exceptions.map((e: Exception) => `- ${e.name}: ${e.reason}${e.criteria ? ` (WCAG ${e.criteria})` : ''}`).join('\n')}
+${exceptions.length > 0 ? `
+Known Limitations
+----------------
+We are aware of the following accessibility limitations:
 
-We are actively working to address these issues and improve our website's accessibility.` : `Conformance Status:
+${exceptions.map((exception: Exception) => `• ${exception.name}: ${exception.reason}`).join('\n')}
+` : ''}
 
-${cleanDomain} is fully conformant with ${conformance} and the European Accessibility Act 2025.`}
+Feedback and Contact Information
+------------------------------
+We welcome your feedback on the accessibility of our website. If you encounter any accessibility barriers or have suggestions for improvement, please contact us at [contact information].
 
-How to request information and content in alternative formats:
+Enforcement Procedure
+-------------------
+If you are not satisfied with our response, you can contact the relevant enforcement body in your country.
 
-If you encounter any difficulty accessing content on this website, please contact us at accessibility@${cleanDomain}. We are committed to providing alternative formats upon request.
+Last Updated: ${new Date().toLocaleDateString()}`;
 
-Accessibility Feedback:
-
-We welcome feedback on the accessibility of this website. You can provide feedback by contacting us at accessibility@${cleanDomain}.
-
-Last updated: ${currentDate}
-This statement was prepared on ${currentDate}.`,
-      'ada': `Accessibility Statement for ${cleanDomain}
-
-${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the Americans with Disabilities Act (ADA). We strive to meet the Web Content Accessibility Guidelines (WCAG) ${wcagVersion}.
-
-What we're doing to improve accessibility:
-
-We are actively working to improve the accessibility of our website and will continue to apply accessibility standards to all content being published. Our team regularly reviews and updates our website to ensure it remains accessible to all users.
-
-${exceptions && exceptions.length > 0 ? `Areas of non-compliance:
-
-${cleanDomain} is currently partially compliant with WCAG ${wcagVersion} due to the following issues:
-${exceptions.map((e: Exception) => `- ${e.name}: ${e.reason}${e.criteria ? ` (WCAG ${e.criteria})` : ''}`).join('\n')}
-
-We are actively working to address these issues and improve our website's accessibility.` : `Conformance Status:
-
-${cleanDomain} is fully conformant with WCAG ${wcagVersion} and the Americans with Disabilities Act (ADA).`}
-
-How to request information and content in alternative formats:
-
-If you encounter any difficulty accessing content on this website, please contact us at accessibility@${cleanDomain}. We are committed to providing alternative formats upon request.
-
-Accessibility Feedback:
-
-We welcome feedback on the accessibility of this website. You can provide feedback by contacting us at accessibility@${cleanDomain}.
-
-Last updated: ${currentDate}
-This statement was prepared on ${currentDate}.`,
-      'aoda': `Accessibility Statement for ${cleanDomain}
-
-${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the Accessibility for Ontarians with Disabilities Act (AODA). We strive to meet the Web Content Accessibility Guidelines (WCAG) ${wcagVersion}.
-
-What we're doing to improve accessibility:
-
-We are actively working to improve the accessibility of our website and will continue to apply accessibility standards to all content being published. Our team regularly reviews and updates our website to ensure it remains accessible to all users.
-
-${exceptions && exceptions.length > 0 ? `Areas of non-compliance:
-
-${cleanDomain} is currently partially compliant with WCAG ${wcagVersion} due to the following issues:
-${exceptions.map((e: Exception) => `- ${e.name}: ${e.reason}${e.criteria ? ` (WCAG ${e.criteria})` : ''}`).join('\n')}
-
-We are actively working to address these issues and improve our website's accessibility.` : `Conformance Status:
-
-${cleanDomain} is fully conformant with WCAG ${wcagVersion} and the Accessibility for Ontarians with Disabilities Act (AODA).`}
-
-How to request information and content in alternative formats:
-
-If you encounter any difficulty accessing content on this website, please contact us at accessibility@${cleanDomain}. We are committed to providing alternative formats upon request.
-
-Accessibility Feedback:
-
-We welcome feedback on the accessibility of this website. You can provide feedback by contacting us at accessibility@${cleanDomain}.
-
-Last updated: ${currentDate}
-This statement was prepared on ${currentDate}.`,
-      'eaa-2025-uk': `Accessibility Statement for ${cleanDomain}
-
-${cleanDomain} (${url}) is committed to making its website accessible to everyone, in accordance with the European Accessibility Act 2025. We strive to meet the Web Content Accessibility Guidelines (WCAG) ${wcagVersion}.
-
-What we're doing to improve accessibility:
-
-We are actively working to improve the accessibility of our website and will continue to apply accessibility standards to all content being published. Our team regularly reviews and updates our website to ensure it remains accessible to all users.
-
-${exceptions && exceptions.length > 0 ? `Areas of non-compliance:
-
-${cleanDomain} is currently partially compliant with WCAG ${wcagVersion} due to the following issues:
-${exceptions.map((e: Exception) => `- ${e.name}: ${e.reason}${e.criteria ? ` (WCAG ${e.criteria})` : ''}`).join('\n')}
-
-We are actively working to address these issues and improve our website's accessibility.` : `Conformance Status:
-
-${cleanDomain} is fully conformant with WCAG ${wcagVersion} and the European Accessibility Act 2025.`}
-
-How to request information and content in alternative formats:
-
-If you encounter any difficulty accessing content on this website, please contact us at accessibility@${cleanDomain}. We are committed to providing alternative formats upon request.
-
-Accessibility Feedback:
-
-We welcome feedback on the accessibility of this website. You can provide feedback by contacting us at accessibility@${cleanDomain}.
-
-Last updated: ${currentDate}
-This statement was prepared on ${currentDate}.`
-    };
-
-    setStatement(templates[legislation as keyof typeof templates] || templates['eaa-2025']);
-  }, [location.state, legislation, wcagVersion, wcagLabel, url, exceptions]);
+      setStatement(baseStatement);
+    }
+  }, [location.state]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -643,27 +642,6 @@ This statement was prepared on ${currentDate}.`
           ) : (
             <pre className="whitespace-pre-wrap font-sans text-gray-700">{statement}</pre>
           )}
-          <div className="mt-6 flex justify-end space-x-4">
-            <button
-              onClick={() => {
-                const blob = new Blob([statement], { type: 'text/plain' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'accessibility-statement.txt';
-                a.click();
-              }}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200"
-            >
-              Download
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-300 hover:bg-primary-400"
-            >
-              Print
-            </button>
-          </div>
         </div>
       </div>
     </div>
