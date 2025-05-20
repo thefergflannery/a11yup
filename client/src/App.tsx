@@ -84,6 +84,9 @@ export const Home = () => {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [urlError, setUrlError] = useState('');
   const [addError, setAddError] = useState<string>('');
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscriptionMessage, setSubscriptionMessage] = useState('');
   const navigate = useNavigate();
 
   // Add scroll handling
@@ -163,6 +166,35 @@ export const Home = () => {
         exceptions
       }
     });
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubscribing(true);
+    setSubscriptionMessage('');
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+
+      setSubscriptionMessage('Successfully subscribed to our mailing list!');
+      setEmail('');
+    } catch (error) {
+      setSubscriptionMessage(error instanceof Error ? error.message : 'Failed to subscribe. Please try again.');
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   return (
@@ -259,7 +291,7 @@ export const Home = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-24 bg-gray-50">
+        <section id="faq" className="py-24 bg-gray-50">
           <div className="w-full px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-4xl font-bold text-secondary-700 mb-6">
@@ -281,8 +313,11 @@ export const Home = () => {
                   </button>
                   {openFaq === 'why' && (
                     <div className="px-8 pb-6">
-                      <p className="text-gray-600 text-lg">
+                      <p className="text-gray-600 text-lg mb-4">
                         An accessibility statement is a legal requirement in many jurisdictions and demonstrates your commitment to digital accessibility. It helps users understand your website's accessibility features and limitations, and provides a way for them to report issues or request alternative formats.
+                      </p>
+                      <p className="text-gray-600 text-lg">
+                        According to the <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32019L0882" target="_blank" rel="noopener noreferrer" className="text-primary-300 hover:text-primary-400">European Accessibility Act (EAA) 2025</a>, private sector companies must provide an accessibility statement that includes both compliant and non-compliant aspects of their digital content.
                       </p>
                     </div>
                   )}
@@ -298,14 +333,67 @@ export const Home = () => {
                   </button>
                   {openFaq === 'legal' && (
                     <div className="px-8 pb-6">
-                      <p className="text-gray-600 text-lg">
-                        Legal requirements vary by region:
+                      <p className="text-gray-600 text-lg mb-4">
+                        Legal requirements vary by region and are constantly evolving. Here are the key regulations:
                       </p>
-                      <ul className="list-disc pl-5 text-gray-600 space-y-2">
-                        <li>EU: European Accessibility Act 2025 requires private sector websites to be accessible</li>
-                        <li>UK: Public Sector Bodies (Websites and Mobile Applications) Regulations 2018</li>
-                        <li>US: Americans with Disabilities Act (ADA) and Section 508</li>
-                        <li>Canada: Accessibility for Ontarians with Disabilities Act (AODA)</li>
+                      <ul className="list-disc pl-5 text-gray-600 space-y-4">
+                        <li>
+                          <strong>EU: European Accessibility Act (EAA) 2025</strong>
+                          <br />
+                          Requires private sector websites to be accessible and provide detailed accessibility statements. 
+                          <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32019L0882" target="_blank" rel="noopener noreferrer" className="text-primary-300 hover:text-primary-400 ml-2">Read the full text</a>
+                        </li>
+                        <li>
+                          <strong>US: Americans with Disabilities Act (ADA)</strong>
+                          <br />
+                          Title III requires businesses to provide equal access to their digital services.
+                          <a href="https://www.ada.gov/resources/web-guidance/" target="_blank" rel="noopener noreferrer" className="text-primary-300 hover:text-primary-400 ml-2">ADA Web Guidance</a>
+                        </li>
+                        <li>
+                          <strong>WCAG Guidelines</strong>
+                          <br />
+                          The Web Content Accessibility Guidelines (WCAG) 2.2 Level AA is the current standard for web accessibility.
+                          <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener noreferrer" className="text-primary-300 hover:text-primary-400 ml-2">WCAG 2.2 Overview</a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                  <button
+                    className="w-full px-8 py-6 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+                    onClick={() => setOpenFaq(openFaq === 'compliance' ? null : 'compliance')}
+                  >
+                    <span className="text-xl font-medium text-secondary-700">Why is it important to declare both compliant and non-compliant items?</span>
+                    <ChevronDownIcon className={`h-6 w-6 text-gray-500 transform transition-transform ${openFaq === 'compliance' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {openFaq === 'compliance' && (
+                    <div className="px-8 pb-6">
+                      <p className="text-gray-600 text-lg mb-4">
+                        Transparency in accessibility compliance is crucial for several reasons:
+                      </p>
+                      <ul className="list-disc pl-5 text-gray-600 space-y-4">
+                        <li>
+                          <strong>Legal Compliance</strong>
+                          <br />
+                          The EAA 2025 explicitly requires organizations to document both compliant and non-compliant aspects of their digital content. This transparency helps demonstrate good faith efforts toward accessibility.
+                        </li>
+                        <li>
+                          <strong>User Trust</strong>
+                          <br />
+                          Users with disabilities need to know what features they can and cannot access. Clear documentation of limitations helps them make informed decisions about using your services.
+                        </li>
+                        <li>
+                          <strong>Risk Management</strong>
+                          <br />
+                          Documenting known accessibility issues can help protect against legal claims by demonstrating awareness and commitment to improvement.
+                        </li>
+                        <li>
+                          <strong>Continuous Improvement</strong>
+                          <br />
+                          Tracking non-compliant items helps prioritize accessibility improvements and demonstrates a commitment to ongoing enhancement.
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -321,17 +409,46 @@ export const Home = () => {
                   </button>
                   {openFaq === 'include' && (
                     <div className="px-8 pb-6">
-                      <p className="text-gray-600 text-lg">
+                      <p className="text-gray-600 text-lg mb-4">
                         A comprehensive accessibility statement should include:
                       </p>
-                      <ul className="list-disc pl-5 text-gray-600 space-y-2">
-                        <li>Your commitment to accessibility</li>
-                        <li>Conformance status with WCAG standards</li>
-                        <li>Known accessibility limitations</li>
-                        <li>How users can report issues</li>
-                        <li>Alternative formats available</li>
-                        <li>Contact information for accessibility support</li>
-                        <li>Last review and update dates</li>
+                      <ul className="list-disc pl-5 text-gray-600 space-y-4">
+                        <li>
+                          <strong>Compliance Status</strong>
+                          <br />
+                          Clear declaration of WCAG conformance level and any applicable legislation (EAA, ADA, etc.)
+                        </li>
+                        <li>
+                          <strong>Accessibility Features</strong>
+                          <br />
+                          Detailed list of implemented accessibility features and how users can benefit from them
+                        </li>
+                        <li>
+                          <strong>Known Limitations</strong>
+                          <br />
+                          Transparent documentation of non-compliant items, including:
+                          <ul className="list-disc pl-5 mt-2">
+                            <li>Description of the limitation</li>
+                            <li>Impact on users</li>
+                            <li>Planned improvements</li>
+                            <li>Alternative access methods</li>
+                          </ul>
+                        </li>
+                        <li>
+                          <strong>Feedback Mechanism</strong>
+                          <br />
+                          Clear process for users to report accessibility issues
+                        </li>
+                        <li>
+                          <strong>Contact Information</strong>
+                          <br />
+                          Dedicated accessibility support contact details
+                        </li>
+                        <li>
+                          <strong>Review Schedule</strong>
+                          <br />
+                          Regular review and update dates for the statement
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -503,35 +620,51 @@ export const Home = () => {
       </main>
 
       {/* Mailing List Section */}
-      <section className="bg-primary-50 py-16">
+      <div className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-secondary-700 mb-4">
-              Stay Up to Date
+          <div className="text-center">
+            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+              Stay Updated
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Get the latest product improvements, accessibility news, and updates delivered straight to your inbox.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-300 focus:border-transparent"
-                required
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-primary-300 text-white font-medium rounded-lg hover:bg-primary-400 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-            <p className="text-sm text-gray-500 mt-4">
-              We respect your privacy. Unsubscribe at any time.
+            <p className="mt-4 text-lg text-gray-600">
+              Subscribe to our mailing list for the latest accessibility news and updates.
             </p>
           </div>
+          <div className="mt-12 max-w-xl mx-auto">
+            <form onSubmit={handleSubscribe} className="sm:flex">
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubscribing}
+                className="w-full px-5 py-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs rounded-md"
+                placeholder="Enter your email"
+              />
+              <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3 sm:flex-shrink-0">
+                <button
+                  type="submit"
+                  disabled={isSubscribing}
+                  className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                >
+                  {isSubscribing ? 'Subscribing...' : 'Subscribe'}
+                </button>
+              </div>
+            </form>
+            {subscriptionMessage && (
+              <p className={`mt-3 text-sm ${subscriptionMessage.includes('Success') ? 'text-green-600' : 'text-red-600'}`}>
+                {subscriptionMessage}
+              </p>
+            )}
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
