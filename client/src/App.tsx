@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { GlobeAltIcon, ArrowRightIcon, PlusIcon, XMarkIcon, CheckCircleIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import Layout from './components/Layout';
 import Footer from './components/Footer';
+import ComingSoonSection from './components/ComingSoonSection';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
@@ -946,6 +947,7 @@ const App = () => {
           <Route path="/results" element={<Results />} />
           <Route path="/compliance" element={<Compliance />} />
         </Routes>
+        <ComingSoonSection />
         <Footer />
       </Layout>
       <Analytics />
