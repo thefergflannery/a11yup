@@ -845,6 +845,79 @@ const Templates = () => (
   </div>
 );
 
+const Compliance = () => (
+  <div className="max-w-4xl mx-auto px-4 py-12">
+    <h1 className="text-4xl font-bold text-secondary-700 mb-8">Accessibility Compliance Statement</h1>
+    
+    <div className="prose prose-lg max-w-none">
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Our Commitment to Accessibility</h2>
+        <p className="text-gray-600 mb-4">
+          A11YO is committed to ensuring digital accessibility for people of all abilities. We strive to continually improve the user experience for everyone and apply the relevant accessibility standards.
+        </p>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Conformance Status</h2>
+        <p className="text-gray-600 mb-4">
+          We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA. These guidelines explain how to make web content more accessible for people with disabilities.
+        </p>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Accessibility Features</h2>
+        <ul className="list-disc pl-6 text-gray-600 space-y-2">
+          <li>Semantic HTML structure for better screen reader compatibility</li>
+          <li>Keyboard navigation support throughout the application</li>
+          <li>High contrast color scheme for better readability</li>
+          <li>Alternative text for all images</li>
+          <li>ARIA labels for interactive elements</li>
+          <li>Responsive design for various screen sizes</li>
+          <li>Clear focus indicators for keyboard navigation</li>
+          <li>Form labels and error messages</li>
+        </ul>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Known Limitations</h2>
+        <p className="text-gray-600 mb-4">
+          While we strive to ensure that our website is accessible, some content may not be fully accessible due to limitations in our content management system or other factors. We are continuously working to improve the accessibility of our website.
+        </p>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Feedback and Contact Information</h2>
+        <p className="text-gray-600 mb-4">
+          We welcome your feedback on the accessibility of our website. If you encounter any accessibility barriers or have suggestions for improvement, please contact us at:
+        </p>
+        <a href="mailto:hello@fergflannery.com" className="text-primary-300 hover:text-primary-400">
+          hello@fergflannery.com
+        </a>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Assessment Methods</h2>
+        <p className="text-gray-600 mb-4">
+          We assess the accessibility of our website using the following methods:
+        </p>
+        <ul className="list-disc pl-6 text-gray-600 space-y-2">
+          <li>Automated accessibility testing tools</li>
+          <li>Manual testing with screen readers</li>
+          <li>Keyboard-only navigation testing</li>
+          <li>Regular audits by accessibility experts</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold text-secondary-700 mb-4">Last Updated</h2>
+        <p className="text-gray-600">
+          This statement was last updated on {new Date().toLocaleDateString()}.
+        </p>
+      </section>
+    </div>
+  </div>
+);
+
 const App = () => {
   return (
     <Router>
@@ -871,6 +944,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/templates" element={<Templates />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/compliance" element={<Compliance />} />
         </Routes>
         <Footer />
       </Layout>

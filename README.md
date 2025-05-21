@@ -1,6 +1,6 @@
-# Accessify - Accessibility Statement Generator
+# A11yo - Accessibility Statement Generator
 
-Accessify is a micro-SaaS tool that helps website owners generate legally compliant accessibility statements. It provides automated scanning, customization options, and multiple export formats.
+A11yo is a micro-SaaS tool that helps website owners generate legally compliant accessibility statements. It provides automated scanning, customization options, and multiple export formats.
 
 ## Features
 
@@ -23,7 +23,7 @@ Accessify is a micro-SaaS tool that helps website owners generate legally compli
 ## Project Structure
 
 ```
-accessify/
+a11yo/
 ├── client/             # React frontend
 ├── server/             # Node.js backend
 ├── shared/             # Shared types and utilities
@@ -42,8 +42,8 @@ accessify/
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/accessify.git
-cd accessify
+git clone https://github.com/yourusername/a11yo.git
+cd a11yo
 ```
 
 2. Install dependencies

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Version tracking
-const VERSION = '0.5.0';
+const VERSION = '0.7.0';
 
 const Footer = () => (
   <footer className="">
