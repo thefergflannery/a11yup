@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom';
 const navigation = [
   { name: 'About', href: '#features', current: false },
   { name: 'FAQ', href: '#faq', current: false },
-  { name: 'Compliance', href: '/compliance', current: false },
 ];
 
 function classNames(...classes: string[]) {
