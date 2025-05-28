@@ -199,7 +199,17 @@ export const Home = () => {
   };
 
   return (
-    <div className="space-y-16">
+    <div className="min-h-screen bg-white">
+      <Helmet>
+        <title>{META_INFO.title}</title>
+        <meta name="description" content={META_INFO.description} />
+        <meta property="og:title" content={META_INFO.title} />
+        <meta property="og:description" content={META_INFO.description} />
+        <meta property="og:image" content={META_INFO.image} />
+        <meta property="og:url" content={META_INFO.url} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
+
       <main className="flex-1">
         {/* Hero Section */}
         <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center">
@@ -666,6 +676,8 @@ export const Home = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
