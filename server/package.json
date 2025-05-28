@@ -1,6 +1,6 @@
 {
   "name": "a11yo-server",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Backend server for A11yo - Accessibility Statement Generator",
   "main": "dist/index.js",
   "scripts": {

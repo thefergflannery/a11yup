@@ -212,8 +212,8 @@ export const Home = () => {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center">
-          <div className="w-full">
+        <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center w-full bg-white">
+          <div className="w-full max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8 text-center lg:text-left">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-secondary-700 leading-tight">
@@ -629,55 +629,6 @@ export const Home = () => {
           </div>
         </section>
       </main>
-
-      {/* Mailing List Section */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Stay Updated
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Subscribe to our mailing list for the latest accessibility news and updates.
-            </p>
-          </div>
-          <div className="mt-12 max-w-xl mx-auto">
-            <form onSubmit={handleSubscribe} className="sm:flex">
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isSubscribing}
-                className="w-full px-5 py-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs rounded-md"
-                placeholder="Enter your email"
-              />
-              <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-                <button
-                  type="submit"
-                  disabled={isSubscribing}
-                  className="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                >
-                  {isSubscribing ? 'Subscribing...' : 'Subscribe'}
-                </button>
-              </div>
-            </form>
-            {subscriptionMessage && (
-              <p className={`mt-3 text-sm ${subscriptionMessage.includes('Success') ? 'text-green-600' : 'text-red-600'}`}>
-                {subscriptionMessage}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <Footer />
     </div>
   );
 }
@@ -805,26 +756,27 @@ const Templates = () => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm"
       >
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">EAA 2025 Template</h2>
-        <div className="prose prose-sm max-w-none">
-          <h3>Compliance Status</h3>
-          <p>This website is being updated to comply with the European Accessibility Act (EAA) 2025, which requires private sector companies to make their products and services accessible to people with disabilities.</p>
-          
-          <h3>Compliance Requirements</h3>
-          <ul>
-            <li>WCAG 2.2 Level AA compliance</li>
-            <li>Accessible digital content and services</li>
-            <li>Alternative formats for non-accessible content</li>
-            <li>Regular accessibility testing and updates</li>
-          </ul>
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">EAA 2025 Template</h2>
+          <div className="prose prose-sm max-w-none">
+            <h3>Compliance Status</h3>
+            <p>This website is being updated to comply with the European Accessibility Act (EAA) 2025, which requires private sector companies to make their products and services accessible to people with disabilities.</p>
+            
+            <h3>Compliance Requirements</h3>
+            <ul>
+              <li>WCAG 2.2 Level AA compliance</li>
+              <li>Accessible digital content and services</li>
+              <li>Alternative formats for non-accessible content</li>
+              <li>Regular accessibility testing and updates</li>
+            </ul>
 
-          <h3>Feedback and Contact Information</h3>
-          <p>We welcome your feedback on the accessibility of our website. Please contact us at [contact information].</p>
+            <h3>Feedback and Contact Information</h3>
+            <p>We welcome your feedback on the accessibility of our website. Please contact us at [contact information].</p>
 
-          <h3>Enforcement Procedure</h3>
-          <p>If you are not satisfied with our response, you can contact the relevant enforcement body in your country.</p>
+            <h3>Enforcement Procedure</h3>
+            <p>If you are not satisfied with our response, you can contact the relevant enforcement body in your country.</p>
+          </div>
         </div>
       </motion.div>
 
@@ -832,26 +784,27 @@ const Templates = () => (
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm"
       >
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">ADA Template</h2>
-        <div className="prose prose-sm max-w-none">
-          <h3>Accessibility Statement</h3>
-          <p>We are committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.</p>
-          
-          <h3>Conformance Status</h3>
-          <p>We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA. These guidelines explain how to make web content more accessible for people with disabilities.</p>
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">ADA Template</h2>
+          <div className="prose prose-sm max-w-none">
+            <h3>Accessibility Statement</h3>
+            <p>We are committed to ensuring digital accessibility for people of all abilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.</p>
+            
+            <h3>Conformance Status</h3>
+            <p>We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA. These guidelines explain how to make web content more accessible for people with disabilities.</p>
 
-          <h3>Accessibility Measures</h3>
-          <ul>
-            <li>Regular accessibility audits</li>
-            <li>Staff accessibility training</li>
-            <li>Alternative formats available</li>
-            <li>Ongoing improvements</li>
-          </ul>
+            <h3>Accessibility Measures</h3>
+            <ul>
+              <li>Regular accessibility audits</li>
+              <li>Staff accessibility training</li>
+              <li>Alternative formats available</li>
+              <li>Ongoing improvements</li>
+            </ul>
 
-          <h3>Feedback and Contact</h3>
-          <p>We welcome your feedback on the accessibility of our website. Please contact us at [contact information].</p>
+            <h3>Feedback and Contact</h3>
+            <p>We welcome your feedback on the accessibility of our website. Please contact us at [contact information].</p>
+          </div>
         </div>
       </motion.div>
     </div>
@@ -959,7 +912,6 @@ const App = () => {
           <Route path="/results" element={<Results />} />
           <Route path="/compliance" element={<Compliance />} />
         </Routes>
-        <Footer />
       </Layout>
       <Analytics />
     </Router>
