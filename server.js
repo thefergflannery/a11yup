@@ -6,15 +6,15 @@ const mailchimp = require('@mailchimp/mailchimp_marketing');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Middleware
+app.use(cors());
+app.use(express.json());
+
 // Mailchimp configuration
 mailchimp.setConfig({
   apiKey: process.env.MAILCHIMP_API_KEY,
   server: process.env.MAILCHIMP_SERVER_PREFIX
 });
-
-// Middleware
-app.use(cors());
-app.use(express.json());
 
 // Serve static files from the build directory
 app.use(express.static(path.join(__dirname, 'client/dist')));
@@ -33,12 +33,12 @@ app.post('/api/subscribe', async (req, res) => {
       status: 'subscribed'
     });
 
-    res.json({ success: true, message: 'Successfully subscribed!' });
+    return res.json({ success: true, message: 'Successfully subscribed!' });
   } catch (error) {
     console.error('Mailchimp subscription error:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to subscribe. Please try again later.',
-      details: error.response?.body || error.message
+      details: error.response?.body || error.message || 'Unknown error'
     });
   }
 });
