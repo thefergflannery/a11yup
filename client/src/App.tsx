@@ -212,7 +212,7 @@ export const Home = () => {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center w-full bg-white">
+        <section className="min-h-[85vh] py-12 px-4 sm:px-6 lg:px-8 flex items-center w-full">
           <div className="w-full max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-8 text-center lg:text-left">
@@ -912,6 +912,7 @@ const App = () => {
           <Route path="/results" element={<Results />} />
           <Route path="/compliance" element={<Compliance />} />
         </Routes>
+        <Footer />
       </Layout>
       <Analytics />
     </Router>
