@@ -188,9 +188,10 @@ export const Home = () => {
         throw new Error(data.error || 'Failed to subscribe');
       }
 
-      setSubscriptionMessage('Successfully subscribed to our mailing list!');
+      setSubscriptionMessage(data.message || 'Successfully subscribed to our mailing list!');
       setEmail('');
     } catch (error) {
+      console.error('Subscription error:', error);
       setSubscriptionMessage(error instanceof Error ? error.message : 'Failed to subscribe. Please try again.');
     } finally {
       setIsSubscribing(false);

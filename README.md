@@ -1,83 +1,71 @@
-# A11yo - Accessibility Statement Generator
+# A11YO - Accessibility Statement Generator
 
-A11yo is a micro-SaaS tool that helps website owners generate legally compliant accessibility statements. It provides automated scanning, customization options, and multiple export formats.
+A11YO is a web application that helps organizations create compliant accessibility statements that meet international standards and regulations, including WCAG 2.2 and EAA 2025 requirements.
 
 ## Features
 
-- Automated accessibility statement generation
-- Optional accessibility scanning using axe-core
-- Support for EU and US jurisdictions
-- WCAG 2.2 compliance level selection (A/AA/AAA)
-- Multiple export formats (PDF, HTML, text)
-- Clean, accessible UI built with React and TailwindCSS
+- Generate WCAG 2.2 compliant accessibility statements
+- Support for multiple legislation types (EAA 2025, ADA, Section 508)
+- Document both compliant and non-compliant items
+- AI-powered statement generation
+- Mailing list subscription for updates
 
 ## Tech Stack
 
-- Frontend: React + TailwindCSS
-- Backend: Node.js + Express
-- Accessibility Scanning: axe-core
-- PDF Generation: Puppeteer
-- Authentication: Clerk/Supabase (optional)
-- Hosting: Vercel (Frontend) + Heroku (Backend)
-
-## Project Structure
-
-```
-a11yo/
-├── client/             # React frontend
-├── server/             # Node.js backend
-├── shared/             # Shared types and utilities
-└── docs/              # Documentation
-```
+- Frontend: React, TypeScript, TailwindCSS, Vite
+- Backend: Node.js, Express
+- Email Marketing: Mailchimp
+- Analytics: Vercel Analytics
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js (v16 or higher)
 - npm or yarn
-- Git
+- Mailchimp API credentials
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/a11yo.git
-cd a11yo
+git clone https://github.com/yourusername/allyup.git
+cd allyup
 ```
 
-2. Install dependencies
+2. Install dependencies:
 ```bash
-# Install frontend dependencies
+# Install client dependencies
 cd client
 npm install
 
-# Install backend dependencies
+# Install server dependencies
 cd ../server
 npm install
 ```
 
-3. Set up environment variables
-```bash
-# In the server directory
-cp .env.example .env
-# Edit .env with your configuration
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```
+MAILCHIMP_API_KEY=your_api_key
+MAILCHIMP_SERVER_PREFIX=your_server_prefix
+MAILCHIMP_LIST_ID=your_list_id
 ```
 
-4. Start development servers
+4. Start the development server:
 ```bash
-# Start frontend (from client directory)
-npm run dev
-
-# Start backend (from server directory)
+# Start both client and server
 npm run dev
 ```
 
-## Development
+## Contributing
 
-- Frontend runs on http://localhost:3000
-- Backend runs on http://localhost:3001
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Contact
+
+For any questions or feedback, please contact hello@fergflannery.com 

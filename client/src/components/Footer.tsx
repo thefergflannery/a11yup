@@ -1,7 +1,8 @@
 import React from 'react';
+// @ts-ignore
+import pkg from '../../../package.json';
 
-// Version tracking
-const VERSION = '0.7.0';
+const VERSION = pkg.version;
 
 const Footer = () => (
   <footer className="">
