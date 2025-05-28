@@ -17,7 +17,7 @@
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.3"
   },
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "A11yo is a micro-SaaS tool that helps website owners generate legally compliant accessibility statements. It provides automated scanning, customization options, and multiple export formats.",
   "main": "server.js",
   "dependencies": {
