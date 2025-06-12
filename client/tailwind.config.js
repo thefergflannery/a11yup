@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,51 +9,90 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#fef2f1',
-          100: '#fde5e3',
-          200: '#fbd0cc',
-          300: '#e96d64',
-          400: '#d44d42',
-          500: '#b13c32',
-          600: '#93342c',
-          700: '#7a3029',
-          800: '#5c2520',
-          900: '#421714',
-          950: '#2a0f0d',
+          DEFAULT: '#2563EB', // blue-600
         },
-        secondary: {
-          50: '#f0f5fa',
-          100: '#dce7f3',
-          200: '#b9cfe7',
-          300: '#8fb0d8',
-          400: '#6a8ec7',
-          500: '#4f73b5',
-          600: '#3d5a97',
-          700: '#043f6d',
-          800: '#2a3a5c',
-          900: '#27334d',
-          950: '#1a2233',
+        accent: {
+          DEFAULT: '#22C55E', // green accent
         },
         gray: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
-          500: '#6b7280',
-          600: '#4b5563',
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
           700: '#374151',
-          800: '#1f2937',
+          800: '#1F2937',
           900: '#111827',
-          950: '#030712',
+        },
+        white: '#FFFFFF',
+        black: '#000000',
+        blue: {
+          50: '#EFF6FF',
+          100: '#DBEAFE',
+          200: '#BFDBFE',
+          300: '#93C5FD',
+          400: '#60A5FA',
+          500: '#2563EB',
+          600: '#1D4ED8',
+          700: '#1E40AF',
+          800: '#1E3A8A',
+          900: '#1E293B',
         },
       },
       fontFamily: {
-        'dm-sans': ['DM Sans', 'sans-serif'],
+        sans: ['Inter var', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
+      spacing: {
+        '128': '32rem',
+        '144': '36rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      },
+      maxWidth: {
+        '8xl': '88rem',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '65ch',
+            color: 'inherit',
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+              fontWeight: '500',
+            },
+            strong: {
+              color: 'inherit',
+            },
+            code: {
+              color: 'inherit',
+            },
+            h1: {
+              color: 'inherit',
+            },
+            h2: {
+              color: 'inherit',
+            },
+            h3: {
+              color: 'inherit',
+            },
+            h4: {
+              color: 'inherit',
+            },
+          },
+        },
       },
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
+  ],
+  safelist: [
+    'btn-primary',
+    'btn-secondary',
   ],
 } 
